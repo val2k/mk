@@ -1,0 +1,23 @@
+executor: KubernetesExecutor
+config:
+  core:
+    dags_folder: /opt/airflow/dags
+logging:
+  colored_console_log: 'True'
+webserver:
+  extraVolumes:
+    - name: dags
+      hostPath:
+        path: /mnt/airflow/dags_mk
+        type: Directory
+  extraVolumeMounts:
+    - name: dags
+      mountPath: /opt/airflow/dags
+scheduler:
+  extraVolumes:
+    - name: dags
+      hostPath:
+        path: /mnt/airflow/dags_mk
+  extraVolumeMounts:
+    - name: dags
+      mountPath: /opt/airflow/dags

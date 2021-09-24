@@ -1,0 +1,27 @@
+version: '3'
+services:
+
+  postgres:
+    image: postgres:13.4
+    volumes:
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - 5432:5432
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_HOST=postgres
+
+networks:
+  default:
+    driver: bridge
